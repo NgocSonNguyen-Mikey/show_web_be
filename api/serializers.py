@@ -4,11 +4,17 @@ from .models import Shop, Category, Product
 
 class ProductSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all())  # hoặc serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+        queryset=Category.objects.all())
+    image = serializers.SerializerMethodField()# hoặc serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
 
     class Meta:
         model = Product
         fields = '__all__'
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+        return None
 
 
 class CategorySerializer(serializers.ModelSerializer):
